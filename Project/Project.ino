@@ -1,10 +1,10 @@
 #include <Servo.h>
 #include <NewPing.h>
 
-const int LeftMotorForward = 6;
-const int LeftMotorBackward = 7;
-const int RightMotorForward = 8;
-const int RightMotorBackward = 9;
+const int LeftMotorForward = 51;
+const int LeftMotorBackward = 50;
+const int RightMotorForward = 53;
+const int RightMotorBackward = 52;
 
 #define trig_pin A1
 #define echo_pin A2
@@ -23,7 +23,7 @@ void setup() {
 
   Serial.begin(9600); // Serial 0 interface for PC
   Serial1.begin(9600); // Serial 1 interface for Bluetooth module
-  
+
   pinMode(LeftMotorForward, OUTPUT);
   pinMode(LeftMotorBackward, OUTPUT);
   pinMode(RightMotorForward, OUTPUT);
@@ -40,7 +40,7 @@ void setup() {
 }
 
 void loop() {
- char mode = 'c';
+  char mode = 'c';
   if (Serial1.available()) { // Read from Bluetooth and send to PC
     mode = Serial1.read();
     if (mode == 'a')
@@ -52,7 +52,7 @@ void loop() {
     controled();
   else
     autonomus();
- 
+
 }
 
 void controled() {
@@ -74,7 +74,7 @@ void controled() {
 }
 
 void autonomus() {
-  Serial.write("autonom\n");
+  //Serial.write("autonom\n");
   int distanceRight = 0;
   int distanceLeft = 0;
   delay(50);
@@ -89,8 +89,8 @@ void autonomus() {
     delay(300);
     distanceLeft = LookLeft();
     delay(300);
-    
-    if (distance >= distanceLeft){
+
+    if (distance >= distanceLeft) {
       turnRight();
       moveStop();
     }
@@ -98,7 +98,7 @@ void autonomus() {
       turnLeft();
       moveStop();
     }
-    
+
   }
   else {
     moveForward();
@@ -113,10 +113,10 @@ int readPing() {
   if (cm == 0)
     cm = 250;
 
-  return cm;  
+  return cm;
 }
 
-int LookLeft(){
+int LookLeft() {
   servo_motor.write(170);
   delay(500);
   int distance = readPing();
@@ -125,7 +125,7 @@ int LookLeft(){
   return distance;
 }
 
-int LookRight(){
+int LookRight() {
   servo_motor.write(10);
   delay(500);
   int distance = readPing();
@@ -134,41 +134,41 @@ int LookRight(){
   return distance;
 }
 
-void moveStop(){
-  digitalWrite(LeftMotorForward,LOW);
-  digitalWrite(LeftMotorBackward,LOW);
-  digitalWrite(RightMotorForward,LOW);
-  digitalWrite(RightMotorBackward,LOW);
+void moveStop() {
+  digitalWrite(LeftMotorForward, LOW);
+  digitalWrite(LeftMotorBackward, LOW);
+  digitalWrite(RightMotorForward, LOW);
+  digitalWrite(RightMotorBackward, LOW);
 }
 
-void moveForward(){
-  Serial.write("Front\n");
-  digitalWrite(LeftMotorForward,HIGH);
-  digitalWrite(LeftMotorBackward,LOW);
-  digitalWrite(RightMotorForward,HIGH);
-  digitalWrite(RightMotorBackward,LOW);
+void moveForward() {
+  //Serial.write("Front\n");
+  digitalWrite(LeftMotorForward, HIGH);
+  digitalWrite(LeftMotorBackward, LOW);
+  digitalWrite(RightMotorForward, HIGH);
+  digitalWrite(RightMotorBackward, LOW);
 }
 
-void moveBackwards(){
-  Serial.write("Back\n");
-  digitalWrite(LeftMotorForward,LOW);
-  digitalWrite(LeftMotorBackward,HIGH);
-  digitalWrite(RightMotorForward,LOW);
-  digitalWrite(RightMotorBackward,HIGH);
+void moveBackwards() {
+  //Serial.write("Back\n");
+  digitalWrite(LeftMotorForward, LOW);
+  digitalWrite(LeftMotorBackward, HIGH);
+  digitalWrite(RightMotorForward, LOW);
+  digitalWrite(RightMotorBackward, HIGH);
 }
 
-void turnLeft(){
-  Serial.write("Right\n");
-  digitalWrite(LeftMotorForward,LOW);
-  digitalWrite(LeftMotorBackward,LOW);
-  digitalWrite(RightMotorForward,HIGH);
-  digitalWrite(RightMotorBackward,LOW);
+void turnLeft() {
+  //Serial.write("Right\n");
+  digitalWrite(LeftMotorForward, LOW);
+  digitalWrite(LeftMotorBackward, LOW);
+  digitalWrite(RightMotorForward, HIGH);
+  digitalWrite(RightMotorBackward, LOW);
 }
 
-void turnRight(){
-  Serial.write("Left\n");
-  digitalWrite(LeftMotorForward,HIGH);
-  digitalWrite(LeftMotorBackward,LOW);
-  digitalWrite(RightMotorForward,LOW);
-  digitalWrite(RightMotorBackward,LOW);
+void turnRight() {
+  //Serial.write("Left\n");
+  digitalWrite(LeftMotorForward, HIGH);
+  digitalWrite(LeftMotorBackward, LOW);
+  digitalWrite(RightMotorForward, LOW);
+  digitalWrite(RightMotorBackward, LOW);
 }
